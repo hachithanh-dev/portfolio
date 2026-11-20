@@ -1,40 +1,51 @@
-# Ha Chi Thanh — Portfolio
+# Hà Chí Thanh — Portfolio
 
-> Backend Engineer · Java & Spring Boot · AI Systems · Distributed Architecture
+> Backend Engineer · Java 21 & Spring Boot · PostgreSQL analytics · AI systems
 
-## 🚀 Tech Stack
+Personal portfolio built with Next.js 16. It presents a production case study (an e-commerce analytics
+backend, client under NDA), personal AI/backend projects, skills and experience.
 
-- **Framework**: Next.js 16 (App Router)
+## Tech stack
+
+- **Framework**: Next.js 16 (App Router, static export of `/`)
 - **Language**: TypeScript
 - **Styling**: Tailwind CSS v4
-- **Animation**: Framer Motion
-- **Smooth Scroll**: Lenis
-- **Font**: Inter + Geist Mono
+- **Animation**: Framer Motion, CSS keyframes, Canvas 2D
+- **Smooth scroll**: Lenis
+- **Icons**: lucide-react, react-icons (Simple Icons)
 
-## ✨ Features
+## Interaction & motion
 
-- Cinematic 5-layer atmospheric background system
-- Scroll-reactive gradient mesh with ambient orbs
-- 3D spotlight-tracking project cards
-- Sticky glass navbar with scroll spy
-- Performance-optimized custom cursor
-- Reduced motion & mobile-responsive support
+- Interactive particle network in the hero (canvas, links to the cursor, pauses off-screen)
+- Letter-by-letter name reveal, rotating role line, live-typing Java code window with 3D tilt
+- Magnetic call-to-action buttons and a custom spring cursor
+- Cursor-tracked glowing borders and an orbiting "border beam" on featured cards
+- Animated data-flow architecture diagram for the case study
+- Scroll progress bar, scroll-linked timeline, count-up statistics, logo marquees
+- `prefers-reduced-motion` respected: particles, marquees, typing and beams fall back to static
 
-## 🛠️ Development
+## Development
 
 ```bash
 npm install
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000)
-
-## 📦 Build
-
-```bash
+npm run dev     # http://localhost:3000
+npm run lint
 npm run build
 ```
 
-## 📄 License
+## Structure
+
+```text
+src/
+  app/                 layout, global styles
+  components/
+    hero/              ParticleNetwork, TerminalCard
+    projects/          CaseStudy
+    ui/                GlowCard, Magnetic, SectionHeading
+    *Section.tsx       page sections
+  lib/cn.ts            className helper
+```
+
+## License
 
 MIT

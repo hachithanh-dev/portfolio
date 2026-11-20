@@ -1,93 +1,101 @@
 "use client";
 
-import { motion, useInView, animate } from "framer-motion";
+import { animate, motion, useInView } from "framer-motion";
 import { useEffect, useRef } from "react";
-import { Code2, GitMerge, Users } from "lucide-react";
-import SectionReveal from "./SectionReveal";
+import { FileText, FolderGit2, GitCommitHorizontal, TestTube2 } from "lucide-react";
+import GlowCard from "./ui/GlowCard";
+import SectionHeading from "./ui/SectionHeading";
 
-function Counter({ from, to, duration = 2 }: { from: number; to: number; duration?: number }) {
+function Counter({ to, duration = 2.2 }: { to: number; duration?: number }) {
   const nodeRef = useRef<HTMLSpanElement>(null);
-  const inView = useInView(nodeRef, { once: true, margin: "-100px" });
+  const inView = useInView(nodeRef, { once: true, margin: "0px 0px -100px 0px" });
 
   useEffect(() => {
-    if (inView && nodeRef.current) {
-      const controls = animate(from, to, {
-        duration,
-        ease: "easeOut",
-        onUpdate(value) {
-          if (nodeRef.current) {
-            nodeRef.current.textContent = Math.round(value).toString();
-          }
-        },
-      });
-      return () => controls.stop();
-    }
-  }, [from, to, duration, inView]);
+    if (!inView) return;
+    const controls = animate(0, to, {
+      duration,
+      ease: [0.16, 1, 0.3, 1],
+      onUpdate(value) {
+        if (nodeRef.current) nodeRef.current.textContent = Math.round(value).toLocaleString("en-US");
+      },
+    });
+    return () => controls.stop();
+  }, [to, duration, inView]);
 
-  return <span ref={nodeRef}>{from}</span>;
+  return <span ref={nodeRef}>0</span>;
 }
 
 const stats = [
   {
-    icon: Code2,
-    label: "Lines of Code",
-    value: 10000,
+    icon: GitCommitHorizontal,
+    value: 380,
     suffix: "+",
-    color: "text-primary",
-  },
-  {
-    icon: GitMerge,
     label: "Commits",
-    value: 100,
-    suffix: "+",
-    color: "text-secondary",
+    detail: "to a production analytics platform",
+    color: "text-sky-300",
   },
   {
-    icon: Users,
-    label: "Projects",
+    icon: TestTube2,
+    value: 250,
+    suffix: "+",
+    label: "Test classes",
+    detail: "unit, slice & Testcontainers integration",
+    color: "text-emerald-300",
+  },
+  {
+    icon: FileText,
+    value: 30,
+    suffix: "+",
+    label: "ADRs",
+    detail: "architecture decisions written down",
+    color: "text-violet-300",
+  },
+  {
+    icon: FolderGit2,
     value: 10,
     suffix: "+",
-    color: "text-accent",
+    label: "Projects",
+    detail: "backend, AI & full-stack builds",
+    color: "text-amber-300",
   },
 ];
 
 export default function AchievementsSection() {
   return (
-    <section id="achievements" className="relative w-full py-32 px-6 md:px-12 lg:px-24 bg-transparent">
-      <div className="max-w-7xl mx-auto relative z-10">
-        <SectionReveal className="mb-16 text-center">
-          <h2 className="text-3xl md:text-5xl font-bold tracking-tighter mb-4">
-            By the Numbers
-          </h2>
-          <p className="text-muted/50 max-w-2xl mx-auto">
-            Metrics that showcase the scale and dedication to my craft.
-          </p>
-        </SectionReveal>
+    <section id="achievements" className="relative w-full px-6 py-32 md:px-12 lg:px-24">
+      <div className="relative z-10 mx-auto max-w-7xl">
+        <SectionHeading
+          index="05"
+          eyebrow="Impact"
+          title="By the"
+          muted="Numbers."
+          align="center"
+          className="mb-16"
+        />
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {stats.map((stat, index) => {
             const Icon = stat.icon;
             return (
               <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                key={stat.label}
+                initial={{ opacity: 0, y: 40, rotateX: 25 }}
+                whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1, ease: [0.25, 0.1, 0.25, 1] }}
-                className="group relative p-8 rounded-2xl glass text-center overflow-hidden border border-white/[0.04] hover:border-white/10 transition-all duration-500"
+                transition={{ duration: 0.8, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
+                style={{ transformPerspective: 800 }}
               >
-                <div className="relative z-10 flex flex-col items-center">
-                  <div className="w-12 h-12 rounded-full border border-white/[0.06] flex items-center justify-center mb-6 bg-[#0a0a0a]">
-                    <Icon className={`w-5 h-5 ${stat.color} opacity-80`} />
+                <GlowCard className="group h-full p-8 text-center">
+                  <div className="mx-auto mb-6 flex h-12 w-12 items-center justify-center rounded-full border border-white/[0.08] bg-[#0a0a0d] transition-transform duration-500 group-hover:scale-110">
+                    <Icon className={`h-5 w-5 ${stat.color}`} />
                   </div>
-                  <div className="text-3xl md:text-5xl font-bold tracking-tight mb-2 flex items-baseline">
-                    <Counter from={0} to={stat.value} duration={2.5} />
-                    <span className={`text-xl ${stat.color} opacity-70`}>{stat.suffix}</span>
+                  <div className="mb-2 flex items-baseline justify-center text-5xl font-bold tracking-tight text-white">
+                    <Counter to={stat.value} />
+                    <span className={`text-2xl ${stat.color}`}>{stat.suffix}</span>
                   </div>
-                  <p className="text-muted/50 text-xs font-medium uppercase tracking-[0.2em]">
-                    {stat.label}
-                  </p>
-                </div>
+                  <p className="mb-2 text-xs font-medium uppercase tracking-[0.2em] text-white/60">{stat.label}</p>
+                  <p className="text-xs text-white/35">{stat.detail}</p>
+                </GlowCard>
               </motion.div>
             );
           })}

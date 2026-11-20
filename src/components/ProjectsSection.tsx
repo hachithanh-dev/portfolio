@@ -1,10 +1,13 @@
 "use client";
 
 import { motion, useMotionTemplate, useMotionValue, useSpring } from "framer-motion";
-import { ArrowRight, GitBranch, ExternalLink } from "lucide-react";
-import SectionReveal from "./SectionReveal";
+import { ArrowUpRight, ExternalLink } from "lucide-react";
+import { FaGithub } from "react-icons/fa";
+import CaseStudy from "./projects/CaseStudy";
+import SectionHeading from "./ui/SectionHeading";
 
 interface Project {
+  index: string;
   title: string;
   subtitle: string;
   challenge: string;
@@ -12,122 +15,125 @@ interface Project {
   tech: string[];
   github: string;
   demo?: string;
-  featured: boolean;
+  accent: string;
 }
 
 const projects: Project[] = [
   {
+    index: "02",
     title: "AI Chatbot System",
-    subtitle: "Production-grade AI infrastructure with RAG pipeline",
+    subtitle: "Production-style AI backend with a RAG pipeline",
     challenge:
-      "Design a production-ready chatbot backend capable of handling multi-turn conversations with context-aware responses, real-time streaming, and secure multi-tenant access.",
+      "A chatbot backend for multi-turn conversations with context-aware answers, real-time streaming and secure multi-tenant access.",
     solution:
-      "Architected a Spring Boot backend integrating Google Gemini via Spring AI, with Qdrant vector database for semantic retrieval (RAG). Implemented Redis Streams for real-time SSE delivery, JWT RS256 authentication, and a full Admin Dashboard for conversation management.",
-    tech: ["Spring Boot", "Spring AI", "Gemini", "Qdrant", "Redis Streams", "React/Vite"],
+      "Spring Boot + Spring AI on Google Gemini, Qdrant for semantic retrieval (RAG), Redis Streams feeding SSE, JWT RS256 authentication and an admin dashboard for conversation management.",
+    tech: ["Spring Boot", "Spring AI", "Gemini", "Qdrant", "Redis Streams", "JWT RS256"],
     github: "https://github.com/hachithanh-dev/chatbot-ai-backend",
-    featured: true,
+    accent: "56,189,248",
   },
   {
-    title: "Blog Platform",
-    subtitle: "Clean architecture backend with optimized data layer",
+    index: "03",
+    title: "AI Chatbot Frontend",
+    subtitle: "Real-time chat interface with SSE streaming",
     challenge:
-      "Build a high-performance blog API emphasizing clean separation of concerns, efficient query patterns, and robust data integrity.",
+      "A responsive chat client that streams AI responses token by token, with auth flows and an admin interface.",
     solution:
-      "Implemented a multi-layer Spring Boot architecture with JPA/Hibernate, optimized N+1 query patterns, and designed a normalized data model supporting rich content management.",
+      "Vite + TypeScript with Server-Sent Events, Google OAuth2 sign-in, a role-based admin dashboard and dark/light theming.",
+    tech: ["TypeScript", "Vite", "React", "Tailwind", "OAuth2"],
+    github: "https://github.com/hachithanh-dev/chatbot-ai-frontend",
+    accent: "167,139,250",
+  },
+  {
+    index: "04",
+    title: "Blog Platform",
+    subtitle: "Clean-architecture backend with an optimized data layer",
+    challenge:
+      "A blog API that keeps concerns separated, queries efficient and data consistent as content grows.",
+    solution:
+      "Layered Spring Boot architecture on JPA/Hibernate with N+1 queries removed and a normalized data model for rich content management.",
     tech: ["Java", "Spring Boot", "MySQL", "Hibernate"],
     github: "https://github.com/hachithanh-dev/blog",
-    featured: false,
-  },
-  {
-    title: "AI Chatbot Frontend",
-    subtitle: "Modern real-time chat interface with SSE streaming",
-    challenge:
-      "Create a responsive chat frontend supporting real-time AI response streaming, authentication flows, and an admin management interface.",
-    solution:
-      "Built with Vite 7 + TypeScript, implementing Server-Sent Events for streaming responses, Google OAuth2 integration, Admin Dashboard with role-based access, and Dark/Light mode theming.",
-    tech: ["TypeScript", "Vite", "React", "Tailwind"],
-    github: "https://github.com/hachithanh-dev/chatbot-ai-frontend",
-    featured: false,
+    accent: "45,212,191",
   },
 ];
 
-function SpotlightCard({ project, index }: { project: Project; index: number }) {
+function ProjectCard({ project, index }: { project: Project; index: number }) {
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  const springX = useSpring(x, { stiffness: 150, damping: 20 });
-  const springY = useSpring(y, { stiffness: 150, damping: 20 });
+  const tiltX = useMotionValue(0);
+  const tiltY = useMotionValue(0);
+  const springX = useSpring(tiltX, { stiffness: 150, damping: 20 });
+  const springY = useSpring(tiltY, { stiffness: 150, damping: 20 });
   const rotateX = useMotionTemplate`${springY}deg`;
   const rotateY = useMotionTemplate`${springX}deg`;
+  const spotlight = useMotionTemplate`radial-gradient(450px circle at ${mouseX}px ${mouseY}px, rgba(${project.accent},0.14), transparent 75%)`;
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
     mouseX.set(e.clientX - rect.left);
     mouseY.set(e.clientY - rect.top);
-    x.set(((e.clientX - rect.left) / rect.width - 0.5) * 8);
-    y.set(((e.clientY - rect.top) / rect.height - 0.5) * -8);
+    tiltX.set(((e.clientX - rect.left) / rect.width - 0.5) * 8);
+    tiltY.set(((e.clientY - rect.top) / rect.height - 0.5) * -8);
   };
-
-  const handleMouseLeave = () => {
-    x.set(0);
-    y.set(0);
-  };
-
-  const spotlight = useMotionTemplate`radial-gradient(500px circle at ${mouseX}px ${mouseY}px, rgba(14,165,233,0.1), transparent 80%)`;
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30, filter: "blur(8px)" }}
+      initial={{ opacity: 0, y: 40, filter: "blur(8px)" }}
       whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.7, delay: index * 0.12, ease: [0.25, 0.1, 0.25, 1] }}
+      viewport={{ once: true, margin: "0px 0px -50px 0px" }}
+      transition={{ duration: 0.8, delay: index * 0.12, ease: [0.22, 1, 0.36, 1] }}
       style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
       onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      className="group relative rounded-2xl bg-[#0a0a0a]/70 border border-white/[0.06] overflow-hidden"
+      onMouseLeave={() => {
+        tiltX.set(0);
+        tiltY.set(0);
+      }}
+      className="group relative flex flex-col overflow-hidden rounded-2xl border border-white/[0.06] bg-[#0a0a0d]/75 transition-colors duration-500 hover:border-white/15"
     >
-      {/* Spotlight layer */}
       <motion.div
-        className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+        className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 transition-opacity duration-500 group-hover:opacity-100"
         style={{ background: spotlight }}
       />
 
-      <div
-        className="relative p-8 md:p-10 flex flex-col gap-6 z-10"
-        style={{ transform: "translateZ(20px)" }}
-      >
-        {/* Header */}
-        <div>
-          <h3 className="text-xl md:text-2xl font-bold tracking-tight mb-1 group-hover:text-primary transition-colors duration-300">
-            {project.title}
-          </h3>
-          <p className="text-sm text-muted/50 font-mono">{project.subtitle}</p>
+      <div className="relative z-10 flex flex-1 flex-col gap-6 p-7 md:p-8" style={{ transform: "translateZ(24px)" }}>
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <span className="mb-3 block font-mono text-xs text-white/25">{project.index}</span>
+            <h3 className="mb-1 text-xl font-bold tracking-tight text-white md:text-2xl">{project.title}</h3>
+            <p className="font-mono text-xs text-white/45">{project.subtitle}</p>
+          </div>
+          <a
+            href={project.github}
+            target="_blank"
+            rel="noreferrer"
+            aria-label={`${project.title} source`}
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/10 text-white/60 transition-all duration-300 group-hover:rotate-45 group-hover:border-white/30 group-hover:text-white"
+          >
+            <ArrowUpRight className="h-4 w-4" />
+          </a>
         </div>
 
-        {/* Challenge & Solution */}
         <div className="space-y-4">
           <div>
-            <span className="text-[10px] uppercase tracking-[0.2em] text-primary/60 font-mono block mb-1.5">
+            <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.2em] text-sky-300/60">
               Challenge
             </span>
-            <p className="text-sm text-muted/70 leading-relaxed">{project.challenge}</p>
+            <p className="text-sm leading-relaxed text-white/60">{project.challenge}</p>
           </div>
           <div>
-            <span className="text-[10px] uppercase tracking-[0.2em] text-accent/60 font-mono block mb-1.5">
+            <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.2em] text-violet-300/60">
               Solution
             </span>
-            <p className="text-sm text-muted/70 leading-relaxed">{project.solution}</p>
+            <p className="text-sm leading-relaxed text-white/60">{project.solution}</p>
           </div>
         </div>
 
-        {/* Tech Stack + Links */}
-        <div className="mt-auto pt-4 border-t border-white/[0.04]">
-          <div className="flex flex-wrap gap-2 mb-5">
+        <div className="mt-auto border-t border-white/[0.05] pt-5">
+          <div className="mb-5 flex flex-wrap gap-2">
             {project.tech.map((t) => (
               <span
                 key={t}
-                className="text-[11px] px-3 py-1 rounded-full border border-white/[0.06] bg-white/[0.02] font-mono text-muted/60 group-hover:border-primary/20 group-hover:text-muted/80 transition-all duration-300"
+                className="rounded-full border border-white/[0.06] bg-white/[0.02] px-3 py-1 font-mono text-[11px] text-white/55 transition-colors duration-300 group-hover:border-white/15 group-hover:text-white/75"
               >
                 {t}
               </span>
@@ -138,20 +144,20 @@ function SpotlightCard({ project, index }: { project: Project; index: number }) 
               href={project.github}
               target="_blank"
               rel="noreferrer"
-              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/[0.03] border border-white/[0.06] text-sm text-muted/70 hover:text-white hover:bg-white/[0.06] hover:border-white/15 transition-all duration-300"
+              className="flex items-center gap-2 rounded-lg border border-white/[0.06] bg-white/[0.03] px-4 py-2 text-sm text-white/65 transition-all duration-300 hover:border-white/20 hover:bg-white/[0.06] hover:text-white"
             >
-              <GitBranch className="w-4 h-4" />
-              Source
+              <FaGithub className="h-4 w-4" />
+              Source code
             </a>
             {project.demo && (
               <a
                 href={project.demo}
                 target="_blank"
                 rel="noreferrer"
-                className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary/10 border border-primary/20 text-sm text-primary hover:bg-primary/15 transition-all duration-300"
+                className="flex items-center gap-2 rounded-lg border border-sky-400/20 bg-sky-400/10 px-4 py-2 text-sm text-sky-300 transition-all duration-300 hover:bg-sky-400/15"
               >
-                <ExternalLink className="w-4 h-4" />
-                Live Demo
+                <ExternalLink className="h-4 w-4" />
+                Live demo
               </a>
             )}
           </div>
@@ -162,33 +168,52 @@ function SpotlightCard({ project, index }: { project: Project; index: number }) 
 }
 
 export default function ProjectsSection() {
-  const featured = projects.find((p) => p.featured)!;
-  const secondary = projects.filter((p) => !p.featured);
-
   return (
-    <section id="projects" className="relative w-full py-32 px-6 md:px-12 lg:px-24 bg-transparent">
-      <div className="max-w-7xl mx-auto relative z-10">
-        <SectionReveal className="mb-16">
-          <h2 className="text-4xl md:text-6xl font-bold tracking-tighter mb-4">
-            Featured <br />
-            <span className="text-muted/50">Engineering Work.</span>
-          </h2>
-          <p className="text-muted/50 max-w-xl text-lg">
-            Systems designed for resilience, scale, and real-world complexity.
-          </p>
-        </SectionReveal>
+    <section id="projects" className="relative w-full px-6 py-32 md:px-12 lg:px-24">
+      <div className="relative z-10 mx-auto max-w-7xl">
+        <SectionHeading
+          index="03"
+          eyebrow="Selected work"
+          title="Featured"
+          muted="Engineering Work."
+          description="Systems built for real users, real data and real failure modes."
+          className="mb-16"
+        />
 
-        {/* Featured Project — Full width */}
-        <div className="mb-8 perspective-[2000px]">
-          <SpotlightCard project={featured} index={0} />
-        </div>
+        <motion.div
+          initial={{ opacity: 0, y: 60, scale: 0.98 }}
+          whileInView={{ opacity: 1, y: 0, scale: 1 }}
+          viewport={{ once: true, margin: "0px 0px -80px 0px" }}
+          transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+          className="mb-8"
+        >
+          <CaseStudy />
+        </motion.div>
 
-        {/* Secondary Projects — Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 perspective-[2000px]">
-          {secondary.map((project, idx) => (
-            <SpotlightCard key={project.title} project={project} index={idx + 1} />
+        <div className="grid grid-cols-1 gap-6 perspective-[2000px] md:grid-cols-2 lg:grid-cols-3">
+          {projects.map((project, idx) => (
+            <ProjectCard key={project.title} project={project} index={idx} />
           ))}
         </div>
+
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+          className="mt-12 flex justify-center"
+        >
+          <a
+            href="https://github.com/hachithanh-dev"
+            target="_blank"
+            rel="noreferrer"
+            className="group flex items-center gap-2 font-mono text-sm text-white/45 transition-colors hover:text-white"
+          >
+            <FaGithub className="h-4 w-4" />
+            More on GitHub
+            <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+          </a>
+        </motion.div>
       </div>
     </section>
   );

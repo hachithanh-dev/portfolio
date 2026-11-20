@@ -1,108 +1,160 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { Mail, ArrowRight } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
+import { ArrowRight, ArrowUp, Check, Copy, Mail } from "lucide-react";
 import { FaGithub, FaLinkedinIn } from "react-icons/fa";
-import SectionReveal from "./SectionReveal";
+import { useState } from "react";
+import GlowCard from "./ui/GlowCard";
+import Magnetic from "./ui/Magnetic";
 
-const NAV_ITEMS = ["About", "Tech", "Projects", "Experience", "Contact"];
+const EMAIL = "hachithanh2005bh@gmail.com";
+
+const NAV_ITEMS = [
+  { label: "About", id: "about" },
+  { label: "Skills", id: "tech" },
+  { label: "Work", id: "projects" },
+  { label: "Experience", id: "experience" },
+  { label: "Contact", id: "contact" },
+];
+
+const EASE = [0.22, 1, 0.36, 1] as const;
 
 export default function ContactSection() {
+  const [copied, setCopied] = useState(false);
+
+  const copyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText(EMAIL);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1800);
+    } catch {
+      window.location.href = `mailto:${EMAIL}`;
+    }
+  };
+
   return (
-    <section
-      id="contact"
-      className="relative w-full pt-32 pb-12 px-6 md:px-12 lg:px-24 bg-transparent overflow-hidden"
-    >
-      <div className="max-w-5xl mx-auto relative z-10">
-        <SectionReveal>
-          <div className="glass rounded-[2.5rem] p-12 md:p-20 text-center border border-white/[0.06] relative overflow-hidden group">
-            {/* Subtle gradient on hover */}
-            <div className="absolute inset-0 bg-gradient-to-t from-primary/[0.04] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+    <section id="contact" className="relative w-full overflow-hidden px-6 pb-12 pt-32 md:px-12 lg:px-24">
+      <div className="relative z-10 mx-auto max-w-5xl">
+        <motion.div
+          initial={{ opacity: 0, y: 60, scale: 0.97 }}
+          whileInView={{ opacity: 1, y: 0, scale: 1 }}
+          viewport={{ once: true, margin: "0px 0px -80px 0px" }}
+          transition={{ duration: 1, ease: EASE }}
+        >
+          <GlowCard beam className="overflow-hidden rounded-[2.5rem] bg-[#07080d]/60">
+            <div className="pointer-events-none absolute -top-40 left-1/2 h-80 w-[36rem] -translate-x-1/2 rounded-full bg-gradient-to-r from-sky-500/20 via-indigo-500/20 to-fuchsia-500/20 blur-3xl" />
+            <div className="relative px-6 py-16 text-center md:px-20 md:py-20">
+              <span className="mb-6 inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.25em] text-sky-300/70">
+                <span className="text-white/30">06</span>
+                <span className="h-px w-8 bg-gradient-to-r from-sky-400/60 to-violet-400/60" />
+                Contact
+              </span>
 
-            <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tighter mb-6 relative z-10">
-              Let&apos;s build <br />
-              <span className="text-gradient">the next big thing.</span>
-            </h2>
+              <h2 className="mb-6 text-4xl font-bold tracking-tighter md:text-6xl lg:text-7xl">
+                Let&apos;s build <br />
+                <span className="text-shimmer">the next big thing.</span>
+              </h2>
 
-            <p className="text-base md:text-lg text-muted/55 max-w-2xl mx-auto mb-10 relative z-10">
-              Whether you have a vision to scale or a complex system to architect, I&apos;m ready to bring it to life.
-            </p>
+              <p className="mx-auto mb-10 max-w-2xl text-base text-white/55 md:text-lg">
+                Hiring for a backend role, or have a system that needs to scale? Let&apos;s talk.
+              </p>
 
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 relative z-10">
-              <a
-                href="mailto:hachithanh2005bh@gmail.com"
-                className="group/btn px-8 py-4 glass border border-white/10 rounded-full font-medium text-white/90 flex items-center gap-3 hover:border-primary/30 hover:bg-primary/[0.04] transition-all duration-300"
-              >
-                <Mail className="w-5 h-5 text-primary/70" />
-                <span>hachithanh2005bh@gmail.com</span>
-                <ArrowRight className="w-4 h-4 opacity-40 group-hover/btn:opacity-100 group-hover/btn:translate-x-1 transition-all duration-300" />
-              </a>
+              <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
+                <Magnetic>
+                  <a
+                    href={`mailto:${EMAIL}`}
+                    className="group relative flex items-center gap-3 overflow-hidden rounded-full bg-gradient-to-r from-sky-500 via-blue-600 to-indigo-600 px-7 py-4 font-medium text-white transition-shadow duration-500 hover:shadow-[0_0_40px_rgba(79,70,229,0.45)]"
+                  >
+                    <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
+                    <Mail className="relative h-5 w-5" />
+                    <span className="relative">Send an email</span>
+                    <ArrowRight className="relative h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                  </a>
+                </Magnetic>
 
-              <a
-                href="https://www.linkedin.com/in/thanhtech/"
-                target="_blank"
-                rel="noreferrer"
-                className="group/btn px-8 py-4 glass border border-white/[0.06] rounded-full font-medium text-white/70 flex items-center gap-3 hover:text-[#0A66C2] hover:border-[#0A66C2]/20 transition-all duration-300"
-              >
-                <FaLinkedinIn className="w-4 h-4" />
-                <span>Connect on LinkedIn</span>
-              </a>
+                <button
+                  type="button"
+                  onClick={copyEmail}
+                  className="glass flex items-center gap-3 rounded-full border border-white/10 px-6 py-4 font-mono text-sm text-white/75 transition-all duration-300 hover:border-white/25 hover:text-white"
+                >
+                  <span className="max-w-[60vw] truncate">{EMAIL}</span>
+                  <AnimatePresence mode="wait" initial={false}>
+                    {copied ? (
+                      <motion.span key="ok" initial={{ scale: 0 }} animate={{ scale: 1 }} exit={{ scale: 0 }}>
+                        <Check className="h-4 w-4 text-emerald-400" />
+                      </motion.span>
+                    ) : (
+                      <motion.span key="copy" initial={{ scale: 0 }} animate={{ scale: 1 }} exit={{ scale: 0 }}>
+                        <Copy className="h-4 w-4 opacity-60" />
+                      </motion.span>
+                    )}
+                  </AnimatePresence>
+                </button>
+              </div>
+
+              <div className="mt-6 h-5 font-mono text-xs text-emerald-300/80" aria-live="polite">
+                {copied ? "Email copied to clipboard" : ""}
+              </div>
+
+              <div className="mt-4 flex items-center justify-center gap-4">
+                <a
+                  href="https://www.linkedin.com/in/thanhtech/"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex items-center gap-2 rounded-full border border-white/[0.08] px-5 py-2.5 text-sm text-white/60 transition-all duration-300 hover:border-[#0A66C2]/50 hover:text-white"
+                >
+                  <FaLinkedinIn className="h-4 w-4" /> LinkedIn
+                </a>
+                <a
+                  href="https://github.com/hachithanh-dev"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex items-center gap-2 rounded-full border border-white/[0.08] px-5 py-2.5 text-sm text-white/60 transition-all duration-300 hover:border-white/30 hover:text-white"
+                >
+                  <FaGithub className="h-4 w-4" /> GitHub
+                </a>
+              </div>
             </div>
-          </div>
-        </SectionReveal>
+          </GlowCard>
+        </motion.div>
       </div>
 
       {/* Footer */}
-      <div className="max-w-7xl mx-auto mt-16 pt-8 border-t border-white/[0.04]">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-          {/* Left: Copyright */}
+      <footer className="mx-auto mt-16 max-w-7xl border-t border-white/[0.05] pt-8">
+        <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
           <div className="text-center md:text-left">
-            <p className="text-muted/35 text-sm">
-              © {new Date().getFullYear()} Ha Chi Thanh. All rights reserved.
-            </p>
-            <p className="text-muted/25 text-xs mt-1 font-mono">
-              Architecture first, code second.
-            </p>
+            <p className="text-sm text-white/40">© {new Date().getFullYear()} Hà Chí Thanh. All rights reserved.</p>
+            <p className="mt-1 font-mono text-xs text-white/25">Architecture first, code second.</p>
           </div>
 
-          {/* Center: Nav links */}
-          <div className="hidden md:flex items-center gap-6">
-            {NAV_ITEMS.map((item) => (
+          <nav className="hidden items-center gap-6 md:flex">
+            {NAV_ITEMS.map(({ label, id }) => (
               <a
-                key={item}
-                href={`#${item.toLowerCase()}`}
+                key={id}
+                href={`#${id}`}
                 onClick={(e) => {
                   e.preventDefault();
-                  document.getElementById(item.toLowerCase())?.scrollIntoView({ behavior: "smooth" });
+                  document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
                 }}
-                className="text-xs text-muted/35 hover:text-muted/70 transition-colors"
+                className="text-xs text-white/40 transition-colors hover:text-white/80"
               >
-                {item}
+                {label}
               </a>
             ))}
-          </div>
+          </nav>
 
-          {/* Right: Social */}
-          <div className="flex items-center gap-4">
-            <a
-              href="https://github.com/hachithanh-dev"
-              target="_blank"
-              rel="noreferrer"
-              className="text-muted/30 hover:text-white/60 transition-colors"
-            >
-              <FaGithub className="w-4 h-4" />
-            </a>
-            <a
-              href="https://www.linkedin.com/in/thanhtech/"
-              target="_blank"
-              rel="noreferrer"
-              className="text-muted/30 hover:text-[#0A66C2]/60 transition-colors"
-            >
-              <FaLinkedinIn className="w-4 h-4" />
-            </a>
-          </div>
+          <button
+            type="button"
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            className="group flex items-center gap-2 font-mono text-xs text-white/40 transition-colors hover:text-white"
+          >
+            Back to top
+            <span className="flex h-8 w-8 items-center justify-center rounded-full border border-white/10 transition-all duration-300 group-hover:-translate-y-1 group-hover:border-white/30">
+              <ArrowUp className="h-3.5 w-3.5" />
+            </span>
+          </button>
         </div>
-      </div>
+      </footer>
     </section>
   );
 }

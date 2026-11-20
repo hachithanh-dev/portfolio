@@ -5,8 +5,8 @@ import { motion, useScroll, useMotionValueEvent } from "framer-motion";
 
 const NAV_ITEMS = [
   { label: "About", href: "#about" },
-  { label: "Tech", href: "#tech" },
-  { label: "Projects", href: "#projects" },
+  { label: "Skills", href: "#tech" },
+  { label: "Work", href: "#projects" },
   { label: "Experience", href: "#experience" },
   { label: "Contact", href: "#contact" },
 ];
@@ -82,13 +82,20 @@ export default function Navbar() {
               <button
                 key={href}
                 onClick={() => scrollTo(href)}
-                className={`px-4 py-2 text-sm font-medium rounded-lg transition-all duration-300 ${
+                className={`relative px-4 py-2 text-sm font-medium rounded-lg transition-colors duration-300 ${
                   activeSection === href.slice(1)
-                    ? "text-white bg-white/[0.06]"
-                    : "text-muted/60 hover:text-white/80 hover:bg-white/[0.03]"
+                    ? "text-white"
+                    : "text-muted/60 hover:text-white/80"
                 }`}
               >
-                {label}
+                {activeSection === href.slice(1) && (
+                  <motion.span
+                    layoutId="nav-active"
+                    className="absolute inset-0 rounded-lg bg-white/[0.07] ring-1 ring-white/10"
+                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                  />
+                )}
+                <span className="relative">{label}</span>
               </button>
             ))}
           </div>

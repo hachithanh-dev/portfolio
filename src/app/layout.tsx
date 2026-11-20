@@ -5,6 +5,7 @@ import SmoothScroll from "@/components/SmoothScroll";
 import CustomCursor from "@/components/CustomCursor";
 import GlobalBackground from "@/components/GlobalBackground";
 import Navbar from "@/components/Navbar";
+import ScrollProgress from "@/components/ScrollProgress";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -19,11 +20,13 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Ha Chi Thanh | Backend Engineer",
   description:
-    "Portfolio of Ha Chi Thanh — Backend Engineer specializing in Java, Spring Boot, AI Systems, and Distributed Architecture.",
+    "Portfolio of Ha Chi Thanh — Backend Engineer building production analytics and AI systems with Java 21, Spring Boot and PostgreSQL.",
   keywords: [
     "Backend Engineer",
     "Java",
     "Spring Boot",
+    "PostgreSQL",
+    "Data Engineering",
     "AI Systems",
     "Portfolio",
     "Ha Chi Thanh",
@@ -35,7 +38,7 @@ export const metadata: Metadata = {
     url: "https://hachithanh.dev",
     title: "Ha Chi Thanh | Backend Engineer",
     description:
-      "Building scalable AI systems with Java & Spring Boot. Explore my engineering portfolio.",
+      "Production analytics backends and AI systems with Java 21, Spring Boot & PostgreSQL. Explore my engineering portfolio.",
     siteName: "Ha Chi Thanh Portfolio",
   },
   twitter: {
@@ -62,6 +65,7 @@ export default function RootLayout({
         className="min-h-full flex flex-col bg-transparent text-foreground"
       >
         <GlobalBackground />
+        <ScrollProgress />
         <CustomCursor />
         <Navbar />
         <SmoothScroll>{children}</SmoothScroll>
