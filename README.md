@@ -3,7 +3,7 @@
 > Backend Engineer · Java 21 & Spring Boot · PostgreSQL analytics · AI systems
 
 Personal portfolio built with Next.js 16, in English and Vietnamese. It presents a production case study (an
-e-commerce analytics backend, client under NDA), a technical article, personal AI/backend projects, skills and
+e-commerce analytics backend, client under NDA), personal AI/backend projects, skills and
 experience.
 
 ## Pages
@@ -12,7 +12,6 @@ experience.
 | --- | --- | --- |
 | `/` | `/vi` | Home |
 | `/work/command-center` | `/vi/work/command-center` | Case study: context, architecture, decisions and trade-offs |
-| `/writing/load-limits-before-cache` | `/vi/writing/load-limits-before-cache` | Article: admission control, shared reads and caching |
 
 Every page is prerendered, has `hreflang` alternates and its own Open Graph image.
 
@@ -72,7 +71,7 @@ src/
     projects/          CaseStudy card, PipelineDiagram
     ui/                GlowCard, Magnetic, SectionHeading, LangSwitch
     *Section.tsx       home page sections
-  content/             case study and article pages, post metadata
+  content/             case study page, shared stack list
   lib/                 i18n helpers, metadata, OG renderer, site constants
 ```
 

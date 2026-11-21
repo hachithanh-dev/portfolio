@@ -1,11 +1,9 @@
-import Link from "next/link";
-import { ArrowRight, Lock } from "lucide-react";
+import { Lock } from "lucide-react";
 import ArticleLayout, { type TocItem } from "@/components/article/ArticleLayout";
-import { Callout, DecisionTable, H2 } from "@/components/article/Prose";
+import { DecisionTable, H2 } from "@/components/article/Prose";
 import PipelineDiagram from "@/components/projects/PipelineDiagram";
 import { CASE_STUDY_STACK } from "./stack";
-import { localePath, type Lang } from "@/lib/i18n";
-import { LOAD_LIMITS_POST, postPath } from "./posts";
+import type { Lang } from "@/lib/i18n";
 
 const TOC: Record<Lang, TocItem[]> = {
   en: [
@@ -36,26 +34,6 @@ function Meta({ lang }: { lang: Lang }) {
       <span className="text-white/50">/</span>
       <span>2026 — {lang === "vi" ? "nay" : "present"}</span>
     </>
-  );
-}
-
-function Footer({ lang }: { lang: Lang }) {
-  const post = LOAD_LIMITS_POST.text[lang];
-  return (
-    <div className="glow-card rounded-2xl p-8">
-      <p className="mb-2 font-mono text-[11px] uppercase tracking-[0.2em] text-sky-300/85">
-        {lang === "vi" ? "Đọc tiếp" : "Keep reading"}
-      </p>
-      <Link
-        href={localePath(lang, postPath(LOAD_LIMITS_POST.slug))}
-        className="group flex items-start justify-between gap-6"
-      >
-        <span className="text-xl font-semibold leading-snug text-white transition-colors group-hover:text-sky-200">
-          {post.title}
-        </span>
-        <ArrowRight className="mt-1 h-5 w-5 shrink-0 text-sky-300 transition-transform duration-300 group-hover:translate-x-1" />
-      </Link>
-    </div>
   );
 }
 
@@ -168,13 +146,6 @@ function BodyEn() {
           ],
         ]}
       />
-      <Callout title="Deep dive" tone="violet">
-        The load-limit decision has its own write-up:{" "}
-        <Link className="text-sky-300 underline underline-offset-4" href={postPath(LOAD_LIMITS_POST.slug)}>
-          {LOAD_LIMITS_POST.text.en.title}
-        </Link>
-        .
-      </Callout>
 
       <H2 id="quality">Quality &amp; delivery</H2>
       <ul>
@@ -335,13 +306,6 @@ function BodyVi() {
           ],
         ]}
       />
-      <Callout title="Đọc sâu hơn" tone="violet">
-        Quyết định giới hạn tải có bài viết riêng:{" "}
-        <Link className="text-sky-300 underline underline-offset-4" href={localePath("vi", postPath(LOAD_LIMITS_POST.slug))}>
-          {LOAD_LIMITS_POST.text.vi.title}
-        </Link>
-        .
-      </Callout>
 
       <H2 id="quality">Chất lượng &amp; triển khai</H2>
       <ul>
@@ -421,7 +385,6 @@ export default function CaseStudyPage({ lang }: { lang: Lang }) {
       tags={["Java 21", "Spring Boot 4", "PostgreSQL", "JdbcClient", "Testcontainers"]}
       toc={TOC[lang]}
       backHash="projects"
-      footer={<Footer lang={lang} />}
     >
       {vi ? <BodyVi /> : <BodyEn />}
     </ArticleLayout>

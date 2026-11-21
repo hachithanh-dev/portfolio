@@ -121,7 +121,7 @@ export default function ExperienceSection() {
   return (
     <section id="experience" className="relative w-full overflow-x-clip px-6 py-32 md:px-12 lg:px-24">
       <div className="mx-auto max-w-5xl">
-        <SectionHeading index="05" eyebrow={t.eyebrow} title={t.title} muted={t.muted} className="mb-20" />
+        <SectionHeading index="04" eyebrow={t.eyebrow} title={t.title} muted={t.muted} className="mb-20" />
 
         <div ref={containerRef} className="relative">
           <div className="absolute bottom-0 left-[19px] top-0 w-px bg-white/[0.07] md:left-[27px]" />

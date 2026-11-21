@@ -64,7 +64,7 @@ export default function AchievementsSection() {
   return (
     <section id="achievements" className="relative w-full px-6 py-32 md:px-12 lg:px-24">
       <div className="relative z-10 mx-auto max-w-7xl">
-        <SectionHeading index="06" eyebrow={t.eyebrow} title={t.title} muted={t.muted} align="center" className="mb-16" />
+        <SectionHeading index="05" eyebrow={t.eyebrow} title={t.title} muted={t.muted} align="center" className="mb-16" />
 
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {STATS.map((stat, index) => {

@@ -11,7 +11,6 @@ const ITEMS = [
   { id: "about", en: "About", vi: "Giới thiệu" },
   { id: "tech", en: "Skills", vi: "Kỹ năng" },
   { id: "projects", en: "Work", vi: "Dự án" },
-  { id: "writing", en: "Writing", vi: "Bài viết" },
   { id: "experience", en: "Experience", vi: "Kinh nghiệm" },
   { id: "contact", en: "Contact", vi: "Liên hệ" },
 ];

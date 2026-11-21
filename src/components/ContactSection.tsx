@@ -27,7 +27,6 @@ const COPY = {
       { id: "about", label: "About" },
       { id: "tech", label: "Skills" },
       { id: "projects", label: "Work" },
-      { id: "writing", label: "Writing" },
       { id: "experience", label: "Experience" },
     ],
   },
@@ -46,7 +45,6 @@ const COPY = {
       { id: "about", label: "Giới thiệu" },
       { id: "tech", label: "Kỹ năng" },
       { id: "projects", label: "Dự án" },
-      { id: "writing", label: "Bài viết" },
       { id: "experience", label: "Kinh nghiệm" },
     ],
   },
@@ -79,7 +77,7 @@ export default function ContactSection() {
             <div className="pointer-events-none absolute -top-40 left-1/2 h-80 w-[36rem] -translate-x-1/2 rounded-full bg-gradient-to-r from-sky-500/20 via-indigo-500/20 to-fuchsia-500/20 blur-3xl" />
             <div className="relative px-6 py-16 text-center md:px-20 md:py-20">
               <span className="mb-6 inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.25em] text-sky-300/80">
-                <span className="text-white/55">07</span>
+                <span className="text-white/55">06</span>
                 <span className="h-px w-8 bg-gradient-to-r from-sky-400/60 to-violet-400/60" />
                 {t.eyebrow}
               </span>

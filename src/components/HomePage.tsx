@@ -2,7 +2,6 @@ import HeroSection from "@/components/HeroSection";
 import AboutSection from "@/components/AboutSection";
 import TechStackSection from "@/components/TechStackSection";
 import ProjectsSection from "@/components/ProjectsSection";
-import WritingSection from "@/components/WritingSection";
 import ExperienceSection from "@/components/ExperienceSection";
 import AchievementsSection from "@/components/AchievementsSection";
 import ContactSection from "@/components/ContactSection";
@@ -14,7 +13,6 @@ export default function HomePage() {
       <AboutSection />
       <TechStackSection />
       <ProjectsSection />
-      <WritingSection />
       <ExperienceSection />
       <AchievementsSection />
       <ContactSection />
