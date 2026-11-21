@@ -1,147 +1,176 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { motion, useScroll, useMotionValueEvent } from "framer-motion";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+import { motion, useMotionValueEvent, useScroll } from "framer-motion";
+import LangSwitch from "./ui/LangSwitch";
+import { langFromPath, localePath } from "@/lib/i18n";
 
-const NAV_ITEMS = [
-  { label: "About", href: "#about" },
-  { label: "Skills", href: "#tech" },
-  { label: "Work", href: "#projects" },
-  { label: "Experience", href: "#experience" },
-  { label: "Contact", href: "#contact" },
+const ITEMS = [
+  { id: "about", en: "About", vi: "Giới thiệu" },
+  { id: "tech", en: "Skills", vi: "Kỹ năng" },
+  { id: "projects", en: "Work", vi: "Dự án" },
+  { id: "writing", en: "Writing", vi: "Bài viết" },
+  { id: "experience", en: "Experience", vi: "Kinh nghiệm" },
+  { id: "contact", en: "Contact", vi: "Liên hệ" },
 ];
 
 const EASE = [0.25, 0.1, 0.25, 1] as const;
 
 export default function Navbar() {
-  const [visible, setVisible] = useState(false);
+  const pathname = usePathname() ?? "/";
+  const lang = langFromPath(pathname);
+  const isHome = pathname === "/" || pathname === "/vi";
+
+  const [pastHero, setPastHero] = useState(false);
   const [activeSection, setActiveSection] = useState("");
   const [mobileOpen, setMobileOpen] = useState(false);
   const { scrollY } = useScroll();
+  const visible = !isHome || pastHero;
 
-  // Show navbar after scrolling past hero (100vh)
   useMotionValueEvent(scrollY, "change", (latest) => {
-    setVisible(latest > window.innerHeight * 0.85);
+    setPastHero(latest > window.innerHeight * 0.85);
   });
 
-  // Scroll spy via IntersectionObserver
+  // Scroll spy (home only)
   useEffect(() => {
+    if (!isHome) return;
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveSection(entry.target.id);
-          }
+          if (entry.isIntersecting) setActiveSection(entry.target.id);
         });
       },
       { rootMargin: "-45% 0px -45% 0px" }
     );
-
-    NAV_ITEMS.forEach(({ href }) => {
-      const el = document.getElementById(href.slice(1));
+    ITEMS.forEach(({ id }) => {
+      const el = document.getElementById(id);
       if (el) observer.observe(el);
     });
-
     return () => observer.disconnect();
-  }, []);
+  }, [isHome]);
 
-  const scrollTo = (href: string) => {
-    setMobileOpen(false);
-    document.getElementById(href.slice(1))?.scrollIntoView({ behavior: "smooth" });
+  const linkClass = (id: string, mobile = false) => {
+    const active = isHome && activeSection === id;
+    if (mobile) {
+      return `rounded-xl px-4 py-3 text-left text-sm font-medium transition-all ${
+        active ? "bg-white/[0.06] text-white" : "text-white/65 hover:text-white"
+      }`;
+    }
+    return `relative rounded-lg px-3.5 py-2 text-sm font-medium transition-colors duration-300 ${
+      active ? "text-white" : "text-white/65 hover:text-white"
+    }`;
+  };
+
+  const renderLink = (item: (typeof ITEMS)[number], mobile = false) => {
+    const label = item[lang];
+    const inner = (
+      <>
+        {!mobile && isHome && activeSection === item.id && (
+          <motion.span
+            layoutId="nav-active"
+            className="absolute inset-0 rounded-lg bg-white/[0.07] ring-1 ring-white/10"
+            transition={{ type: "spring", stiffness: 380, damping: 30 }}
+          />
+        )}
+        <span className="relative">{label}</span>
+      </>
+    );
+
+    if (isHome) {
+      return (
+        <button
+          key={item.id}
+          type="button"
+          onClick={() => {
+            setMobileOpen(false);
+            document.getElementById(item.id)?.scrollIntoView({ behavior: "smooth" });
+          }}
+          className={linkClass(item.id, mobile)}
+        >
+          {inner}
+        </button>
+      );
+    }
+    return (
+      <Link
+        key={item.id}
+        href={localePath(lang, `/#${item.id}`)}
+        onClick={() => setMobileOpen(false)}
+        className={linkClass(item.id, mobile)}
+      >
+        {inner}
+      </Link>
+    );
   };
 
   return (
     <>
       <motion.nav
-        initial={{ y: "-100%" }}
-        animate={{ y: visible ? "0%" : "-100%" }}
+        initial={false}
+        animate={{ y: visible ? "0%" : "-120%" }}
         transition={{ duration: 0.4, ease: EASE }}
-        className="fixed top-0 left-0 right-0 z-50 px-6 md:px-12 lg:px-24 py-4"
+        className="fixed left-0 right-0 top-0 z-50 px-4 py-4 md:px-12 lg:px-24"
       >
-        <div className="max-w-7xl mx-auto flex items-center justify-between rounded-2xl px-6 py-3 bg-[#050505]/70 backdrop-blur-2xl border border-white/[0.06]">
-          {/* Logo — Terminal-style monogram */}
-          <a
-            href="#"
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 rounded-2xl border border-white/[0.06] bg-[#050505]/75 px-4 py-3 backdrop-blur-2xl md:px-6">
+          <Link
+            href={localePath(lang, "/")}
             onClick={(e) => {
-              e.preventDefault();
-              window.scrollTo({ top: 0, behavior: "smooth" });
+              if (isHome) {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }
             }}
-            className="group flex items-center gap-2 hover:opacity-100 transition-all duration-300"
+            className="group flex items-center gap-2 transition-all duration-300"
+            aria-label="Hà Chí Thanh — home"
           >
-            <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-br from-primary/20 to-secondary/20 border border-white/[0.08] group-hover:border-primary/30 group-hover:shadow-[0_0_12px_rgba(14,165,233,0.2)] transition-all duration-300">
-              <span className="text-xs font-mono font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">&gt;_</span>
+            <span className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/[0.08] bg-gradient-to-br from-primary/20 to-secondary/20 transition-all duration-300 group-hover:border-primary/30 group-hover:shadow-[0_0_12px_rgba(14,165,233,0.2)]">
+              <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text font-mono text-xs font-bold text-transparent">
+                &gt;_
+              </span>
             </span>
-            <span className="text-sm font-semibold tracking-tight text-white/70 group-hover:text-white/90 transition-colors hidden sm:inline">
-              thanh<span className="text-primary/60">.dev</span>
+            <span className="hidden text-sm font-semibold tracking-tight text-white/75 transition-colors group-hover:text-white sm:inline">
+              thanh<span className="text-sky-300/80">.dev</span>
             </span>
-          </a>
+          </Link>
 
-          {/* Desktop links */}
-          <div className="hidden md:flex items-center gap-1">
-            {NAV_ITEMS.map(({ label, href }) => (
-              <button
-                key={href}
-                onClick={() => scrollTo(href)}
-                className={`relative px-4 py-2 text-sm font-medium rounded-lg transition-colors duration-300 ${
-                  activeSection === href.slice(1)
-                    ? "text-white"
-                    : "text-muted/60 hover:text-white/80"
-                }`}
-              >
-                {activeSection === href.slice(1) && (
-                  <motion.span
-                    layoutId="nav-active"
-                    className="absolute inset-0 rounded-lg bg-white/[0.07] ring-1 ring-white/10"
-                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                  />
-                )}
-                <span className="relative">{label}</span>
-              </button>
-            ))}
+          <div className="hidden items-center gap-0.5 lg:flex">{ITEMS.map((item) => renderLink(item))}</div>
+
+          <div className="flex items-center gap-3">
+            <LangSwitch id="nav" />
+            <button
+              type="button"
+              onClick={() => setMobileOpen(!mobileOpen)}
+              className="flex h-8 w-8 flex-col items-center justify-center gap-1.5 lg:hidden"
+              aria-label="Toggle menu"
+              aria-expanded={mobileOpen}
+            >
+              <motion.span
+                animate={mobileOpen ? { rotate: 45, y: 5 } : { rotate: 0, y: 0 }}
+                className="block h-[1.5px] w-5 origin-center bg-white/70"
+              />
+              <motion.span animate={mobileOpen ? { opacity: 0 } : { opacity: 1 }} className="block h-[1.5px] w-5 bg-white/70" />
+              <motion.span
+                animate={mobileOpen ? { rotate: -45, y: -5 } : { rotate: 0, y: 0 }}
+                className="block h-[1.5px] w-5 origin-center bg-white/70"
+              />
+            </button>
           </div>
-
-          {/* Mobile hamburger */}
-          <button
-            onClick={() => setMobileOpen(!mobileOpen)}
-            className="md:hidden flex flex-col items-center justify-center w-8 h-8 gap-1.5"
-            aria-label="Toggle menu"
-          >
-            <motion.span
-              animate={mobileOpen ? { rotate: 45, y: 5 } : { rotate: 0, y: 0 }}
-              className="block w-5 h-[1.5px] bg-white/70 origin-center"
-            />
-            <motion.span
-              animate={mobileOpen ? { opacity: 0 } : { opacity: 1 }}
-              className="block w-5 h-[1.5px] bg-white/70"
-            />
-            <motion.span
-              animate={mobileOpen ? { rotate: -45, y: -5 } : { rotate: 0, y: 0 }}
-              className="block w-5 h-[1.5px] bg-white/70 origin-center"
-            />
-          </button>
         </div>
       </motion.nav>
 
-      {/* Mobile menu panel */}
       <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={mobileOpen && visible ? { opacity: 1, y: 0 } : { opacity: 0, y: -20, pointerEvents: "none" as const }}
+        initial={false}
+        animate={
+          mobileOpen && visible
+            ? { opacity: 1, y: 0, pointerEvents: "auto" as const }
+            : { opacity: 0, y: -20, pointerEvents: "none" as const }
+        }
         transition={{ duration: 0.3, ease: EASE }}
-        className="fixed top-20 left-6 right-6 z-50 md:hidden bg-[#0a0a0a]/95 backdrop-blur-2xl border border-white/[0.06] rounded-2xl p-4 flex flex-col gap-1"
+        className="fixed left-4 right-4 top-20 z-50 flex flex-col gap-1 rounded-2xl border border-white/[0.06] bg-[#0a0a0a]/95 p-4 backdrop-blur-2xl lg:hidden"
       >
-        {NAV_ITEMS.map(({ label, href }) => (
-          <button
-            key={href}
-            onClick={() => scrollTo(href)}
-            className={`px-4 py-3 text-left text-sm font-medium rounded-xl transition-all ${
-              activeSection === href.slice(1)
-                ? "text-white bg-white/[0.06]"
-                : "text-muted/60 hover:text-white/80"
-            }`}
-          >
-            {label}
-          </button>
-        ))}
+        {ITEMS.map((item) => renderLink(item, true))}
       </motion.div>
     </>
   );

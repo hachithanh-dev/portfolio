@@ -16,7 +16,7 @@ const TYPE = "text-sky-300";
 const STR = "text-emerald-300";
 const FN = "text-amber-200";
 const TXT = "text-white/80";
-const CMT = "text-white/30";
+const CMT = "text-white/50";
 
 const LINES: Segment[][] = [
   [{ t: "// Engineer.java", c: CMT }],
@@ -98,7 +98,7 @@ export default function TerminalCard() {
           return n + 1;
         });
       }, 18);
-    }, 1600);
+    }, 1100);
     return () => {
       clearTimeout(start);
       if (interval) clearInterval(interval);
@@ -123,7 +123,7 @@ export default function TerminalCard() {
     <motion.div
       initial={{ opacity: 0, y: 40, rotateX: 12 }}
       animate={{ opacity: 1, y: 0, rotateX: 0 }}
-      transition={{ duration: 1.1, delay: 1.2, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: 1.1, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
       style={{ perspective: 1200 }}
       className="relative"
     >
@@ -150,15 +150,15 @@ export default function TerminalCard() {
             <span className="h-3 w-3 rounded-full bg-[#ff5f57]" />
             <span className="h-3 w-3 rounded-full bg-[#febc2e]" />
             <span className="h-3 w-3 rounded-full bg-[#28c840]" />
-            <span className="ml-3 font-mono text-xs text-white/40">Engineer.java</span>
-            <span className="ml-auto rounded-md border border-white/[0.06] px-2 py-0.5 font-mono text-[10px] uppercase tracking-widest text-white/30">
+            <span className="ml-3 font-mono text-xs text-white/55">Engineer.java</span>
+            <span className="ml-auto rounded-md border border-white/[0.06] px-2 py-0.5 font-mono text-[10px] uppercase tracking-widest text-white/50">
               java 21
             </span>
           </div>
 
           {/* code */}
           <div className="relative z-10 flex gap-4 px-4 py-5 font-mono text-[13px] leading-[1.7]">
-            <div className="select-none text-right text-white/15">
+            <div className="select-none text-right text-white/50">
               {LINES.map((_, i) => (
                 <div key={i}>{i + 1}</div>
               ))}
@@ -197,11 +197,11 @@ export default function TerminalCard() {
               {done ? (
                 <>
                   <span className="text-emerald-400">✓ BUILD SUCCESS</span>
-                  <span className="text-white/30">· all checks passed · ready to ship</span>
+                  <span className="text-white/55">· all checks passed · ready to ship</span>
                   <Caret />
                 </>
               ) : (
-                <span className="text-white/40">$ ./mvnw verify …</span>
+                <span className="text-white/55">$ ./mvnw verify …</span>
               )}
             </motion.div>
           </div>

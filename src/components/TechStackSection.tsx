@@ -31,8 +31,26 @@ import {
 import { BrainCircuit, Database, Server, Wrench } from "lucide-react";
 import GlowCard from "./ui/GlowCard";
 import SectionHeading from "./ui/SectionHeading";
+import { useT } from "@/lib/use-lang";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
+
+const COPY = {
+  en: {
+    eyebrow: "Skills",
+    title: "Tech",
+    muted: "Arsenal.",
+    description: "Tools I use in production — chosen for correctness first, then measured for speed.",
+    groups: ["Backend", "Data", "AI Systems", "Quality & Delivery"],
+  },
+  vi: {
+    eyebrow: "Kỹ năng",
+    title: "Bộ công cụ",
+    muted: "kỹ thuật.",
+    description: "Công cụ tôi dùng trong production — chọn vì tính đúng đắn trước, rồi mới đo để tối ưu tốc độ.",
+    groups: ["Backend", "Dữ liệu", "Hệ thống AI", "Chất lượng & Triển khai"],
+  },
+};
 
 const groups = [
   {
@@ -143,6 +161,8 @@ function LogoMarquee({ logos, reverse, duration }: { logos: Logo[]; reverse?: bo
 }
 
 export default function TechStackSection() {
+  const t = useT(COPY);
+
   return (
     <section id="tech" className="relative w-full overflow-hidden py-32">
       <div className="absolute left-1/2 top-0 h-px w-3/4 -translate-x-1/2 bg-gradient-to-r from-transparent via-sky-400/30 to-transparent" />
@@ -150,10 +170,10 @@ export default function TechStackSection() {
       <div className="mx-auto max-w-7xl px-6 md:px-12 lg:px-24">
         <SectionHeading
           index="02"
-          eyebrow="Skills"
-          title="Tech"
-          muted="Arsenal."
-          description="Tools I use in production — chosen for correctness first, then measured for speed."
+          eyebrow={t.eyebrow}
+          title={t.title}
+          muted={t.muted}
+          description={t.description}
           className="mb-16"
         />
 
@@ -171,8 +191,8 @@ export default function TechStackSection() {
                 <GlowCard className="h-full p-7">
                   <div className="mb-5 flex items-center gap-3">
                     <Icon className={`h-5 w-5 ${group.color}`} />
-                    <h3 className="font-semibold text-white">{group.title}</h3>
-                    <span className="ml-auto font-mono text-xs text-white/25">
+                    <h3 className="font-semibold text-white">{t.groups[gi]}</h3>
+                    <span className="ml-auto font-mono text-xs text-white/55">
                       {String(group.items.length).padStart(2, "0")}
                     </span>
                   </div>

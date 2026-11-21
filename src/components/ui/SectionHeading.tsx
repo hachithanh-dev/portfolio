@@ -53,7 +53,7 @@ export default function SectionHeading({
           align === "center" && "justify-center"
         )}
       >
-        <span className="text-white/30">{index}</span>
+        <span className="text-white/55">{index}</span>
         <span className="h-px w-8 bg-gradient-to-r from-sky-400/60 to-violet-400/60" />
         {eyebrow}
       </motion.div>
