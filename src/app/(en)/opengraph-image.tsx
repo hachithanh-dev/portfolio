@@ -6,8 +6,8 @@ export const contentType = OG_CONTENT_TYPE;
 
 export default function Image() {
   return renderOg({
-    kicker: "Open to backend roles",
+    kicker: "Backend Engineer",
     title: "Hà Chí Thanh",
-    subtitle: "Backend Engineer · Production analytics backends and AI systems.",
+    subtitle: "Production analytics backends and AI systems.",
   });
 }

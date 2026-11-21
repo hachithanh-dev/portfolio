@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion, useScroll, useTransform } from "framer-motion";
-import { ArrowDown, ArrowUpRight, Mail, MapPin } from "lucide-react";
+import { ArrowDown, ArrowUpRight, Mail } from "lucide-react";
 import { FaGithub, FaLinkedinIn } from "react-icons/fa";
 import { useEffect, useRef, useState } from "react";
 import ParticleNetwork from "./hero/ParticleNetwork";
@@ -17,8 +17,6 @@ const NAME = "Hà Chí Thanh".normalize("NFC");
 
 const COPY = {
   en: {
-    badge: "Open to backend opportunities",
-    city: "Ho Chi Minh City",
     hello: "Hi, I am",
     roles: [
       "Backend Engineer",
@@ -38,8 +36,6 @@ const COPY = {
     scroll: "Scroll to about",
   },
   vi: {
-    badge: "Sẵn sàng cho vị trí Backend",
-    city: "TP. Hồ Chí Minh",
     hello: "Xin chào, tôi là",
     roles: [
       "Kỹ sư Backend",
@@ -146,22 +142,6 @@ export default function HeroSection() {
       >
         {/* Left — identity */}
         <div className="lg:col-span-7">
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: EASE, delay: 0.1 }}
-            className="mb-8 inline-flex flex-wrap items-center gap-3 rounded-full border border-emerald-400/20 bg-emerald-400/[0.06] px-4 py-1.5 text-xs font-medium text-emerald-300/90 backdrop-blur"
-          >
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
-            </span>
-            {t.badge}
-            <span className="hidden items-center gap-1 text-white/55 sm:inline-flex">
-              <MapPin className="h-3 w-3" /> {t.city}
-            </span>
-          </motion.div>
-
           <p className="mb-3 font-mono text-base tracking-wide text-white/50 md:text-lg">{t.hello}</p>
 
           <h1
